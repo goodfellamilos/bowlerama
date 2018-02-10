@@ -1,0 +1,89 @@
+html {
+  height: 100%;
+  margin: 0;
+  font-size: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mt-40 { margin-top: 40px; }
+
+.text-right {
+  text-align: right;
+}
+
+.main-bg {
+  height: 100%;
+  background-image: url('bowlerama-bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 40px;
+}
+
+.heading {
+  color: #fff;
+  margin: 0 auto 40px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 50px;
+}
+
+.container, .container > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bowling-container {
+  height: 500px;
+  width: 900px;
+}
+
+.bowling {
+  display: flex;
+  height: 100%;
+}
+
+.bowling__add-players {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bowling__add-players__form {
+  text-align: center;
+  height: 80px;
+}
+
+.bowling__players-list__heading {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.bowling__bottom-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
