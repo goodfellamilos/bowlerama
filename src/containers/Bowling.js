@@ -23,7 +23,7 @@ import {
 } from '../actions/bowlingActions';
 import ListItemWrapper from '../components/ListItemWrapper';
 import PinButton from '../components/PinButton';
-import { PAPER_STYLE, LIST_STYLE } from '../constants/materialUIStyles';
+import { PAPER_STYLE, LIST_STYLE, TABLE_CELL_HIGHLIGHTED_STYLE } from '../constants/materialUIStyles';
 import uniqid from 'uniqid';
 import { MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
 import { generateArrFromN } from '../helpers/utils';
@@ -150,6 +150,13 @@ class Bowling extends Component {
   renderPlayersTable() {
     const { players } = this.props;
     const headerFramesArr = generateArrFromN(MAX_NUMBER_OF_FRAMES);
+    let frame = 1;
+    let playerName = players[0].name;
+    let playerId = players[0].id;
+
+    if (players[0].scores.length) {
+      frame = players[0].scores.length;
+    }
 
     return (
       <Table>
@@ -157,9 +164,16 @@ class Bowling extends Component {
           <TableRow>
             <TableHeaderColumn>Player</TableHeaderColumn>
             {
-              headerFramesArr.map(frame => (
-                <TableHeaderColumn key={`tableHeaderHeaderColumn_${frame}`}>{`F ${frame + 1}`}</TableHeaderColumn>
-              ))
+              headerFramesArr.map(frameIndex => {
+                const tableHeaderColumnStyle = frameIndex + 1 === frame ? TABLE_CELL_HIGHLIGHTED_STYLE : {};
+                return (
+                  <TableHeaderColumn
+                      key={`tableHeaderHeaderColumn_${frameIndex}`}
+                      style={tableHeaderColumnStyle}>
+                    {`F ${frameIndex + 1}`}
+                  </TableHeaderColumn>
+                )
+              })
             }
             <TableHeaderColumn>Score</TableHeaderColumn>
           </TableRow>
@@ -170,9 +184,9 @@ class Bowling extends Component {
               <TableRow key={`tableRow_${player.id}`}>
                 <TableRowColumn>{player.name}</TableRowColumn>
                 {
-                  headerFramesArr.map(frame => (
-                    <TableHeaderColumn key={`tableBodyHeaderColumn_${frame}`}>
-                      {this.renderPlayerScore(player.scores, frame)}
+                  headerFramesArr.map(frameIndex => (
+                    <TableHeaderColumn key={`tableBodyHeaderColumn_${frameIndex}`}>
+                      {this.renderPlayerScore(player.scores, frameIndex)}
                     </TableHeaderColumn>
                   ))
                 }
@@ -203,15 +217,19 @@ class Bowling extends Component {
     let playerName = players[0].name;
     let playerId = players[0].id;
 
-    if (players[0].scores.length > 0) {
+    if (players.length) {
+      const test = players.reduce((scores, player) => {
+        scores.push(player.scores);
+        return scores;
+      }, []);
+    }
+
+    if (players[0].scores.length) {
       frame = players[0].scores.length;
     }
 
     return (
       <div className="bowling__game-form">
-        <div className="bowling__game-form__frame">
-          Current Frame: {frame}
-        </div>
         <div className="bowling__game-form__player mt-10">
           Player Name: {playerName}
         </div>

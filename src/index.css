@@ -101,3 +101,7 @@ button:disabled {
   display: flex;
   justify-content: space-between;
 }
+
+.cell-highlighted {
+  background-color: #00bcd4;
+}
