@@ -1,0 +1,7 @@
+const MAX_NUMBER_OF_FRAMES = 10;
+const MAX_NUMBER_OF_PINS = 10;
+
+export {
+  MAX_NUMBER_OF_FRAMES,
+  MAX_NUMBER_OF_PINS
+}
