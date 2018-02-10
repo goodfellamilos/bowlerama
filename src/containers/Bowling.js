@@ -6,7 +6,6 @@ import {
   RaisedButton,
   FlatButton,
   List,
-  ListItem,
   Table,
   TableBody,
   TableHeader,
@@ -22,25 +21,12 @@ import {
   removeAllPlayers,
   roll
 } from '../actions/bowlingActions';
-import DeleteButton from '../components/DeleteButton';
+import ListItemWrapper from '../components/ListItemWrapper';
 import PinButton from '../components/PinButton';
-import { PAPER_STYLE, LIST_STYLE, LIST_ITEM_STYLE } from '../constants/materialUIStyles';
+import { PAPER_STYLE, LIST_STYLE } from '../constants/materialUIStyles';
 import uniqid from 'uniqid';
 import { MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
-
-const ListItemWrapper = ({ player, onClick }) => {
-  const onButtonClick = () => {
-    onClick(player.id);
-  };
-
-  return (
-    <ListItem
-        disableTouchRipple={true}
-        style={LIST_ITEM_STYLE}
-        primaryText={player.name}
-        rightIconButton={<DeleteButton onClick={onButtonClick} />} />
-  );
-};
+import { generateArrFromN } from '../helpers/utils';
 
 class Bowling extends Component {
   constructor() {
@@ -163,22 +149,19 @@ class Bowling extends Component {
 
   renderPlayersTable() {
     const { players } = this.props;
+    const headerFramesArr = generateArrFromN(MAX_NUMBER_OF_FRAMES);
 
     return (
       <Table>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
             <TableHeaderColumn>Player</TableHeaderColumn>
-            <TableHeaderColumn>Frame 1</TableHeaderColumn>
-            <TableHeaderColumn>Frame 2</TableHeaderColumn>
-            <TableHeaderColumn>Frame 3</TableHeaderColumn>
-            <TableHeaderColumn>Frame 4</TableHeaderColumn>
-            <TableHeaderColumn>Frame 5</TableHeaderColumn>
-            <TableHeaderColumn>Frame 6</TableHeaderColumn>
-            <TableHeaderColumn>Frame 7</TableHeaderColumn>
-            <TableHeaderColumn>Frame 8</TableHeaderColumn>
-            <TableHeaderColumn>Frame 9</TableHeaderColumn>
-            <TableHeaderColumn>Frame 10</TableHeaderColumn>
+            {
+              headerFramesArr.map(frame => (
+                <TableHeaderColumn key={`tableHeaderHeaderColumn_${frame}`}>{`F ${frame + 1}`}</TableHeaderColumn>
+              ))
+            }
+            <TableHeaderColumn>Score</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
@@ -186,6 +169,14 @@ class Bowling extends Component {
             players.map(player => (
               <TableRow key={`tableRow_${player.id}`}>
                 <TableRowColumn>{player.name}</TableRowColumn>
+                {
+                  headerFramesArr.map(frame => (
+                    <TableHeaderColumn key={`tableBodyHeaderColumn_${frame}`}>
+                      {this.renderPlayerScore(player.scores, frame)}
+                    </TableHeaderColumn>
+                  ))
+                }
+                <TableRowColumn>{this.renderPlayerTotalScore(player.scores)}</TableRowColumn>
               </TableRow>
             ))
           }
@@ -194,25 +185,37 @@ class Bowling extends Component {
     );
   }
 
+  renderPlayerScore(scores, frame) {
+    if (scores.length) {
+      return scores[frame] && scores[frame].join(' ');
+    }
+
+    return ' ';
+  }
+
+  renderPlayerTotalScore(scores) {
+    return 0;
+  }
+
   renderBowlingActions() {
     const { players } = this.props;
     let frame = 1;
     let playerName = players[0].name;
     let playerId = players[0].id;
 
-   /* if (players[0].scores.length > 0) {
-
-    }*/
+    if (players[0].scores.length > 0) {
+      frame = players[0].scores.length;
+    }
 
     return (
       <div className="bowling__game-form">
         <div className="bowling__game-form__frame">
-          Frame: {frame}
+          Current Frame: {frame}
         </div>
-        <div className="bowling__game-form__player">
+        <div className="bowling__game-form__player mt-10">
           Player Name: {playerName}
         </div>
-        <div className="bowling__game-form__pins">
+        <div className="bowling__game-form__pins mt-10">
           {this.renderPinButtons(playerId)}
         </div>
       </div>
@@ -220,7 +223,7 @@ class Bowling extends Component {
   }
 
   renderPinButtons(playerId) {
-    const pinButtonsArr = Array.apply(null, {length: MAX_NUMBER_OF_PINS}).map(Number.call, Number);
+    const pinButtonsArr = generateArrFromN(MAX_NUMBER_OF_PINS);
 
     return pinButtonsArr.map(item => (
       <PinButton key={`pinButton_${item}`} playerId={playerId} numberOfPins={item + 1} onClick={this.onPinClick} />

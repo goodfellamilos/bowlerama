@@ -39,7 +39,7 @@ export default function friends(state = initialState, action) {
 
       return {
         ...state,
-        players: players
+        players: [].concat(players)
       };
     default:
       return state;
