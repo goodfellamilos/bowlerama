@@ -33,6 +33,14 @@ button:disabled {
   text-align: right;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 .main-bg {
   height: 100%;
   background-image: url('bowlerama-bg.jpg');
@@ -107,7 +115,7 @@ button:disabled {
 }
 
 .table-container {
-  height: 320px;
+  height: 285px;
   overflow-x: hidden;
   overflow-y: auto;
 }

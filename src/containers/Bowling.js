@@ -23,6 +23,7 @@ import {
 } from '../actions/bowlingActions';
 import ListItemWrapper from '../components/ListItemWrapper';
 import PinButton from '../components/PinButton';
+import RandomPinsButton from '../components/RandomPinsButton';
 import {
   PAPER_STYLE,
   LIST_STYLE,
@@ -31,7 +32,7 @@ import {
 } from '../constants/materialUIStyles';
 import uniqid from 'uniqid';
 import { MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
-import { generateArrFromN } from '../helpers/utils';
+import { generateArrFromN, getRandomInt } from '../helpers/utils';
 
 // Get active player when current active player finished with rolling
 const getActivePlayer = (players, currentActivePlayer) => {
@@ -204,11 +205,11 @@ class Bowling extends Component {
                 headerFramesArr.map(frameIndex => {
                   const tableHeaderColumnStyle = frameIndex + 1 === frame ? TABLE_CELL_HIGHLIGHTED_STYLE : {};
                   return (
-                      <TableHeaderColumn
-                          key={`tableHeaderHeaderColumn_${frameIndex}`}
-                          style={tableHeaderColumnStyle}>
-                        {`F ${frameIndex + 1}`}
-                      </TableHeaderColumn>
+                    <TableHeaderColumn
+                        key={`tableHeaderHeaderColumn_${frameIndex}`}
+                        style={tableHeaderColumnStyle}>
+                      {`F ${frameIndex + 1}`}
+                    </TableHeaderColumn>
                   )
                 })
               }
@@ -224,12 +225,14 @@ class Bowling extends Component {
                   const tableRowColumnStyle = activePlayer.id === player.id ? TABLE_CELL_HIGHLIGHTED_STYLE : {};
                   return (
                     <TableRow key={`tableRow_${player.id}`}>
-                      <TableRowColumn style={tableRowColumnStyle}>{player.name}</TableRowColumn>
+                      <TableRowColumn style={{...TABLE_FIRST_COLUMN_CELL_STYLE, ...tableRowColumnStyle}}>
+                        {player.name}
+                      </TableRowColumn>
                       {
                         headerFramesArr.map(frameIndex => (
-                            <TableHeaderColumn key={`tableBodyHeaderColumn_${frameIndex}`}>
-                              {this.renderPlayerScore(player.scores, frameIndex)}
-                            </TableHeaderColumn>
+                          <TableHeaderColumn key={`tableBodyHeaderColumn_${frameIndex}`}>
+                            {this.renderPlayerScore(player.scores, frameIndex)}
+                          </TableHeaderColumn>
                         ))
                       }
                       <TableRowColumn>{this.renderPlayerTotalScore(player.scores)}</TableRowColumn>
@@ -246,7 +249,14 @@ class Bowling extends Component {
 
   renderPlayerScore(scores, frame) {
     if (scores.length) {
-      return scores[frame] && scores[frame].join(' ');
+      const frameScore = scores[frame];
+
+      return (
+        <div className="text-center">
+          {frameScore && frameScore.slice(0, 2).join(' ')}
+          {frameScore && frameScore[2] ? <div className="bold">{frameScore[2]}</div> : null}
+        </div>
+      );
     }
 
     return ' ';
@@ -284,6 +294,9 @@ class Bowling extends Component {
         <div className="bowling__game-form__pins mt-10">
           {this.renderPinButtons(activePlayer.id, remainingPinsValue)}
         </div>
+        <div className="text-center mt-20">
+          {this.renderRandomPinsButton(activePlayer.id, remainingPinsValue)}
+        </div>
       </div>
     );
   }
@@ -299,9 +312,21 @@ class Bowling extends Component {
             key={`pinButton_${item}`}
             playerId={playerId}
             numberOfPins={item}
-            disabled={buttonDisabled} onClick={this.onPinClick} />
+            disabled={buttonDisabled}
+            onClick={this.onPinClick} />
       )
     });
+  }
+
+  renderRandomPinsButton(playerId, remainingPinsValue) {
+    const numberOfPins = getRandomInt(0, remainingPinsValue);
+
+    return (
+      <RandomPinsButton
+          playerId={playerId}
+          numberOfPins={numberOfPins}
+          onClick={this.onPinClick} />
+    )
   }
 
   renderGameRulesDialog() {
