@@ -11,7 +11,7 @@ const PinButton = ({ playerId, numberOfPins, onClick }) => {
 
   return (
     <FloatingActionButton style={floatingActionButtonStyle} onClick={onButtonClick}>
-      {numberOfPins}
+      {`${numberOfPins}`}
     </FloatingActionButton>
   );
 };

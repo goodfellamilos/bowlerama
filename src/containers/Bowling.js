@@ -208,7 +208,11 @@ class Bowling extends Component {
   }
 
   renderPlayerTotalScore(scores) {
-    return 0;
+    if (scores && scores.length) {
+      return scores.filter(score => score.length === 3).map(score => score[2]).reduce((sum, val) => sum + val, 0);
+    }
+
+    return ' ';
   }
 
   renderBowlingActions() {
@@ -241,10 +245,10 @@ class Bowling extends Component {
   }
 
   renderPinButtons(playerId) {
-    const pinButtonsArr = generateArrFromN(MAX_NUMBER_OF_PINS);
+    const pinButtonsArr = generateArrFromN(MAX_NUMBER_OF_PINS + 1);
 
     return pinButtonsArr.map(item => (
-      <PinButton key={`pinButton_${item}`} playerId={playerId} numberOfPins={item + 1} onClick={this.onPinClick} />
+      <PinButton key={`pinButton_${item}`} playerId={playerId} numberOfPins={item} onClick={this.onPinClick} />
     ));
   }
 
