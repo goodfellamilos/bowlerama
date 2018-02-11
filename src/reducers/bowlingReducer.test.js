@@ -8,7 +8,17 @@ const initialState = {
 };
 
 const updatedState = {
-  players: ['Test Player One', 'Test Player Two']
+  players: [
+    {
+      name: 'Player Number One',
+      id: '_playerNumberOne_',
+      scores: []
+    }, {
+      name: 'Player Number Two',
+      id: '_playerNumberTwo_',
+      scores: []
+    }
+  ]
 };
 
 describe('bowlingReducer', () => {
@@ -19,18 +29,31 @@ describe('bowlingReducer', () => {
   it('should return new state for ADD_PLAYER action', () => {
     expect(bowlingReducer(initialState, {
       type: ADD_PLAYER,
-      playerName: 'Test Player One'
+      playerName: 'Player Number One',
+      playerId: '_playerNumberOne_'
     })).toEqual({
-      players: ['Test Player One']
+      players: [
+        {
+          name: 'Player Number One',
+          id: '_playerNumberOne_',
+          scores: []
+        }
+      ]
     });
   });
 
   it('should return new state for REMOVE_PLAYER action', () => {
     expect(bowlingReducer(updatedState, {
       type: REMOVE_PLAYER,
-      playerIndex: 1
+      playerId: '_playerNumberTwo_'
     })).toEqual({
-      players: ['Test Player One']
+      players: [
+        {
+          name: 'Player Number One',
+          id: '_playerNumberOne_',
+          scores: []
+        }
+      ]
     });
   });
 

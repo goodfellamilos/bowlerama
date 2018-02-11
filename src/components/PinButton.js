@@ -19,10 +19,12 @@ const PinButton = ({ playerId, numberOfPins, disabled, onClick }) => {
 PinButton.propTypes = {
   playerId: PropTypes.string.isRequired,
   numberOfPins: PropTypes.number.isRequired,
+  disabled: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired
 };
 
 PinButton.defaultProps = {
+  disabled: false,
   onClick: e => e
 };
 

@@ -11,17 +11,18 @@ describe('bowlingActions', () => {
   it('should create an action to Add Player', () => {
     const expectedAction = {
       type: ADD_PLAYER,
-      playerName: 'Player Number One'
+      playerName: 'Player Number One',
+      playerId: '_playerNumberOne_'
     };
-    expect(addPlayer('Player Number One')).toEqual(expectedAction);
+    expect(addPlayer('Player Number One', '_playerNumberOne_')).toEqual(expectedAction);
   });
 
   it('should create an action to Remove Player', () => {
     const expectedAction = {
       type: REMOVE_PLAYER,
-      playerIndex: 1
+      playerId: '_playerNumberOne_'
     };
-    expect(removePlayer(1)).toEqual(expectedAction);
+    expect(removePlayer('_playerNumberOne_')).toEqual(expectedAction);
   });
 
   it('should create an action to Remove All Players', () => {

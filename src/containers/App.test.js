@@ -9,7 +9,7 @@ configure({ adapter: new Adapter() });
 describe('renders without crashing container App', () => {
 
   it('should render div', () => {
-      expect(shallow(<App />).find('div').length).toBe(1);
+    expect(shallow(<App />).find('div').length).toBe(1);
   });
 
   it('should render Provider', () => {
