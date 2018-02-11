@@ -31,7 +31,7 @@ import {
   TABLE_FIRST_COLUMN_CELL_STYLE
 } from '../constants/materialUIStyles';
 import uniqid from 'uniqid';
-import { MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
+import { GAME_RULES, MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
 import { generateArrFromN, getRandomInt } from '../helpers/utils';
 
 // Get active player when current active player finished with rolling
@@ -346,11 +346,7 @@ class Bowling extends Component {
             actions={dialogActions}
             open={this.state.dialogOpen}
             onRequestClose={this.onCloseDialogClick}>
-          - A game consists of 10 frames. <br />
-          - In general each frame has 2 rolls. <br />
-          - In general a player scores the number of pins knocked down. <br />
-          - If the player knocks down all 10 pins on the first roll it’s a strike. The player scores 10 plus the number of pins knocked down in the next two rolls. <br />
-          - If the player knocks down all 10 pins in two rolls it’s a spare. The player scores 10 plus the number of pins knocked down in the next roll.
+          {GAME_RULES.map((rule, index) => <div key={`rule_${index}`}>{rule}</div>)}
         </Dialog>
       </div>
     )

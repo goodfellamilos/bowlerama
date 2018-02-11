@@ -95,7 +95,7 @@ export default function friends(state = initialState, action) {
       const { playerId, numberOfPins } = action;
       const currentPlayer = players.find(player => player.id === playerId);
       let currentPlayerScores = populateScores(currentPlayer.scores, numberOfPins);
-      currentPlayerScores = calculateScores(currentPlayerScores);
+      currentPlayer.scores = calculateScores(currentPlayerScores);
 
       return {
         ...state,
