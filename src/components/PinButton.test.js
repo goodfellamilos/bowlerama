@@ -32,8 +32,8 @@ describe('PinButton component', () => {
     expect(mount(
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <PinButton
-            playerId={'_playerNumberOne_'}
-            numberOfPins={4}
+            playerId={'_playerNumberTwo_'}
+            numberOfPins={7}
             onClick={e => e} />
       </MuiThemeProvider>
     ).find('button').prop('disabled')).toEqual(false);
@@ -43,11 +43,25 @@ describe('PinButton component', () => {
     expect(mount(
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <PinButton
-            playerId={'_playerNumberOne_'}
-            numberOfPins={4}
+            playerId={'_playerNumberThree_'}
+            numberOfPins={10}
             disabled={true}
             onClick={e => e} />
       </MuiThemeProvider>
     ).find('button').prop('disabled')).toEqual(true);
+  });
+
+  it('creates a snapshot of a component PinButton', () => {
+    const component = renderer.create(
+      <MuiThemeProvider muiTheme={getMuiTheme()}>
+        <PinButton
+            playerId={'_playerNumberFour_'}
+            numberOfPins={8}
+            onClick={e => e} />
+      </MuiThemeProvider>
+    );
+
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });

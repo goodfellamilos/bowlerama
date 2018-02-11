@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ListItemWrapper component renders without crashing component ListItemWrapper 1`] = `
+exports[`ListItemWrapper component creates a snapshot of a component ListItemWrapper 1`] = `
 <div>
   <span
     disabled={false}

@@ -23,7 +23,7 @@ describe('ListItemWrapper component', () => {
     );
   });
 
-  it('renders without crashing component ListItemWrapper', () => {
+  it('creates a snapshot of a component ListItemWrapper', () => {
     const component = renderer.create(
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <ListItemWrapper
