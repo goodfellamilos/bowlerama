@@ -23,10 +23,42 @@ import {
 } from '../actions/bowlingActions';
 import ListItemWrapper from '../components/ListItemWrapper';
 import PinButton from '../components/PinButton';
-import { PAPER_STYLE, LIST_STYLE, TABLE_CELL_HIGHLIGHTED_STYLE } from '../constants/materialUIStyles';
+import {
+  PAPER_STYLE,
+  LIST_STYLE,
+  TABLE_CELL_HIGHLIGHTED_STYLE,
+  TABLE_FIRST_COLUMN_CELL_STYLE
+} from '../constants/materialUIStyles';
 import uniqid from 'uniqid';
 import { MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
 import { generateArrFromN } from '../helpers/utils';
+
+// Get active player when current active player finished with rolling
+const getActivePlayer = (players, currentActivePlayer) => {
+  const maxScoresLength = Math.max.apply(Math, players.map(player => player.scores.length));
+  let activePlayer = currentActivePlayer;
+
+  if (maxScoresLength > 0) {
+    const playersWithMaxScoresLength = players.filter(player => player.scores.length === maxScoresLength);
+    const lastPlayerWithMaxScores = playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
+    const scoresOfLastPlayerWithMaxScores = lastPlayerWithMaxScores.scores;
+    const lastScoreOfLastPlayerWithMaxScores = scoresOfLastPlayerWithMaxScores[scoresOfLastPlayerWithMaxScores.length - 1];
+
+    activePlayer = lastPlayerWithMaxScores;
+
+    if (lastScoreOfLastPlayerWithMaxScores.length === 3) {
+      const activePlayerIndex = players.findIndex(player => player.id === activePlayer.id);
+
+      if (activePlayerIndex === players.length - 1) {
+        activePlayer = players[0];
+      } else {
+        activePlayer = players[activePlayerIndex + 1];
+      }
+    }
+  }
+
+  return activePlayer
+};
 
 class Bowling extends Component {
   constructor() {
@@ -151,51 +183,64 @@ class Bowling extends Component {
     const { players } = this.props;
     const headerFramesArr = generateArrFromN(MAX_NUMBER_OF_FRAMES);
     let frame = 1;
-    let playerName = players[0].name;
-    let playerId = players[0].id;
 
     if (players[0].scores.length) {
       frame = players[0].scores.length;
     }
 
+    let activePlayer = players[0];
+
+    if (players.length > 1) {
+      activePlayer = getActivePlayer(players, activePlayer);
+    }
+
     return (
-      <Table>
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-          <TableRow>
-            <TableHeaderColumn>Player</TableHeaderColumn>
-            {
-              headerFramesArr.map(frameIndex => {
-                const tableHeaderColumnStyle = frameIndex + 1 === frame ? TABLE_CELL_HIGHLIGHTED_STYLE : {};
-                return (
-                  <TableHeaderColumn
-                      key={`tableHeaderHeaderColumn_${frameIndex}`}
-                      style={tableHeaderColumnStyle}>
-                    {`F ${frameIndex + 1}`}
-                  </TableHeaderColumn>
-                )
-              })
-            }
-            <TableHeaderColumn>Score</TableHeaderColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody displayRowCheckbox={false}>
-          {
-            players.map(player => (
-              <TableRow key={`tableRow_${player.id}`}>
-                <TableRowColumn>{player.name}</TableRowColumn>
-                {
-                  headerFramesArr.map(frameIndex => (
-                    <TableHeaderColumn key={`tableBodyHeaderColumn_${frameIndex}`}>
-                      {this.renderPlayerScore(player.scores, frameIndex)}
-                    </TableHeaderColumn>
-                  ))
-                }
-                <TableRowColumn>{this.renderPlayerTotalScore(player.scores)}</TableRowColumn>
-              </TableRow>
-            ))
-          }
-        </TableBody>
-      </Table>
+      <div>
+        <Table>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false} fixedHeader={true}>
+            <TableRow>
+              <TableHeaderColumn style={TABLE_FIRST_COLUMN_CELL_STYLE}>{'Player'}</TableHeaderColumn>
+              {
+                headerFramesArr.map(frameIndex => {
+                  const tableHeaderColumnStyle = frameIndex + 1 === frame ? TABLE_CELL_HIGHLIGHTED_STYLE : {};
+                  return (
+                      <TableHeaderColumn
+                          key={`tableHeaderHeaderColumn_${frameIndex}`}
+                          style={tableHeaderColumnStyle}>
+                        {`F ${frameIndex + 1}`}
+                      </TableHeaderColumn>
+                  )
+                })
+              }
+              <TableHeaderColumn>{'Score'}</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+        </Table>
+        <div className="table-container">
+          <Table>
+            <TableBody displayRowCheckbox={false}>
+              {
+                players.map(player => {
+                  const tableRowColumnStyle = activePlayer.id === player.id ? TABLE_CELL_HIGHLIGHTED_STYLE : {};
+                  return (
+                    <TableRow key={`tableRow_${player.id}`}>
+                      <TableRowColumn style={tableRowColumnStyle}>{player.name}</TableRowColumn>
+                      {
+                        headerFramesArr.map(frameIndex => (
+                            <TableHeaderColumn key={`tableBodyHeaderColumn_${frameIndex}`}>
+                              {this.renderPlayerScore(player.scores, frameIndex)}
+                            </TableHeaderColumn>
+                        ))
+                      }
+                      <TableRowColumn>{this.renderPlayerTotalScore(player.scores)}</TableRowColumn>
+                    </TableRow>
+                  )
+                })
+              }
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     );
   }
 
@@ -220,28 +265,11 @@ class Bowling extends Component {
     let activePlayer = players[0];
 
     if (players.length > 1) {
-      const maxScoresLength = Math.max.apply(Math, players.map(player => player.scores.length));
-
-      if (maxScoresLength > 0) {
-        const playersWithMaxScoresLength = players.filter(player => player.scores.length === maxScoresLength);
-        const lastPlayerWithMaxScores = playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
-        const scoresOfLastPlayerWithMaxScores = lastPlayerWithMaxScores.scores;
-        const lastScoreOfLastPlayerWithMaxScores = scoresOfLastPlayerWithMaxScores[scoresOfLastPlayerWithMaxScores.length - 1];
-
-        activePlayer = lastPlayerWithMaxScores;
-
-        if (lastScoreOfLastPlayerWithMaxScores.length === 3) {
-          const activePlayerIndex = players.findIndex(player => player.id === activePlayer.id);
-
-          if (activePlayerIndex === players.length - 1) {
-            activePlayer = players[0];
-          } else {
-            activePlayer = players[activePlayerIndex + 1];
-          }
-        }
-      }
+      activePlayer = getActivePlayer(players, activePlayer);
     }
 
+    // Disable Pin numbers after first roll, if first roll value larger than 0
+    // (subtract number of pins knocked down from max number of pins - 10)
     const activePlayerScores = activePlayer.scores;
     const activePlayerActiveScore = activePlayerScores[activePlayerScores.length - 1];
 

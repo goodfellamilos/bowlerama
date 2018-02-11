@@ -105,3 +105,9 @@ button:disabled {
 .cell-highlighted {
   background-color: #00bcd4;
 }
+
+.table-container {
+  height: 320px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
