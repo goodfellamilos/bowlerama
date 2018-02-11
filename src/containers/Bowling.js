@@ -217,39 +217,63 @@ class Bowling extends Component {
 
   renderBowlingActions() {
     const { players } = this.props;
-    let frame = 1;
-    let playerName = players[0].name;
-    let playerId = players[0].id;
+    let activePlayer = players[0];
 
-    if (players.length) {
-      const test = players.reduce((scores, player) => {
-        scores.push(player.scores);
-        return scores;
-      }, []);
+    if (players.length > 1) {
+      const maxScoresLength = Math.max.apply(Math, players.map(player => player.scores.length));
+
+      if (maxScoresLength > 0) {
+        const playersWithMaxScoresLength = players.filter(player => player.scores.length === maxScoresLength);
+        const lastPlayerWithMaxScores = playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
+        const scoresOfLastPlayerWithMaxScores = lastPlayerWithMaxScores.scores;
+        const lastScoreOfLastPlayerWithMaxScores = scoresOfLastPlayerWithMaxScores[scoresOfLastPlayerWithMaxScores.length - 1];
+
+        activePlayer = lastPlayerWithMaxScores;
+
+        if (lastScoreOfLastPlayerWithMaxScores.length === 3) {
+          const activePlayerIndex = players.findIndex(player => player.id === activePlayer.id);
+
+          if (activePlayerIndex === players.length - 1) {
+            activePlayer = players[0];
+          } else {
+            activePlayer = players[activePlayerIndex + 1];
+          }
+        }
+      }
     }
 
-    if (players[0].scores.length) {
-      frame = players[0].scores.length;
+    const activePlayerScores = activePlayer.scores;
+    const activePlayerActiveScore = activePlayerScores[activePlayerScores.length - 1];
+
+    let remainingPinsValue = MAX_NUMBER_OF_PINS;
+
+    if (activePlayerActiveScore && activePlayerActiveScore.length === 1) {
+      remainingPinsValue -= activePlayerActiveScore[0];
     }
 
     return (
       <div className="bowling__game-form">
-        <div className="bowling__game-form__player mt-10">
-          Player Name: {playerName}
-        </div>
         <div className="bowling__game-form__pins mt-10">
-          {this.renderPinButtons(playerId)}
+          {this.renderPinButtons(activePlayer.id, remainingPinsValue)}
         </div>
       </div>
     );
   }
 
-  renderPinButtons(playerId) {
+  renderPinButtons(playerId, remainingPinsValue) {
     const pinButtonsArr = generateArrFromN(MAX_NUMBER_OF_PINS + 1);
 
-    return pinButtonsArr.map(item => (
-      <PinButton key={`pinButton_${item}`} playerId={playerId} numberOfPins={item} onClick={this.onPinClick} />
-    ));
+    return pinButtonsArr.map(item => {
+      const buttonDisabled = item > remainingPinsValue;
+
+      return (
+        <PinButton
+            key={`pinButton_${item}`}
+            playerId={playerId}
+            numberOfPins={item}
+            disabled={buttonDisabled} onClick={this.onPinClick} />
+      )
+    });
   }
 
   renderGameRulesDialog() {
