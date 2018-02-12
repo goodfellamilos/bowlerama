@@ -1,3 +1,5 @@
+import { MAX_NUMBER_OF_PINS } from '../constants/game';
+
 const populateScores = (scores, numberOfPins) => {
   const scoresLength = scores.length;
   const currentFrame = scoresLength - 1;
@@ -63,6 +65,44 @@ const calculateScores = (scores) => {
   return scores;
 };
 
+// Get active player after current active player finished with rolling
+const getActivePlayer = (players, currentActivePlayer) => {
+  const maxScoresLength = Math.max.apply(Math, players.map(player => player.scores.length));
+  let activePlayer = currentActivePlayer;
+
+  if (maxScoresLength > 0) {
+    const playersWithMaxScoresLength = players.filter(player => player.scores.length === maxScoresLength);
+    const lastPlayerWithMaxScores = playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
+    const scoresOfLastPlayerWithMaxScores = lastPlayerWithMaxScores.scores;
+    const lastScoreOfLastPlayerWithMaxScores = scoresOfLastPlayerWithMaxScores[scoresOfLastPlayerWithMaxScores.length - 1];
+
+    activePlayer = lastPlayerWithMaxScores;
+
+    if (lastScoreOfLastPlayerWithMaxScores.length === 3) {
+      const activePlayerIndex = players.findIndex(player => player.id === activePlayer.id);
+
+      if (activePlayerIndex === players.length - 1) {
+        activePlayer = players[0];
+      } else {
+        activePlayer = players[activePlayerIndex + 1];
+      }
+    }
+  }
+
+  return activePlayer
+};
+
+const calculateRemainingPins = (activePlayerScores) => {
+  let remainingPins = MAX_NUMBER_OF_PINS;
+  const activePlayerActiveScore = activePlayerScores[activePlayerScores.length - 1];
+
+  if (activePlayerActiveScore && activePlayerActiveScore.length === 1) {
+    remainingPins -= activePlayerActiveScore[0];
+  }
+
+  return remainingPins;
+};
+
 export {
   populateScores,
   isStrike,
@@ -70,5 +110,7 @@ export {
   getFrameFirstRoll,
   sumFrameRolls,
   calculateFrameTotalScore,
-  calculateScores
+  calculateScores,
+  getActivePlayer,
+  calculateRemainingPins
 }

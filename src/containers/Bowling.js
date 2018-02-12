@@ -33,33 +33,7 @@ import {
 import uniqid from 'uniqid';
 import { GAME_RULES, MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
 import { generateArrFromN, getRandomInt } from '../helpers/utils';
-
-// Get active player when current active player finished with rolling
-const getActivePlayer = (players, currentActivePlayer) => {
-  const maxScoresLength = Math.max.apply(Math, players.map(player => player.scores.length));
-  let activePlayer = currentActivePlayer;
-
-  if (maxScoresLength > 0) {
-    const playersWithMaxScoresLength = players.filter(player => player.scores.length === maxScoresLength);
-    const lastPlayerWithMaxScores = playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
-    const scoresOfLastPlayerWithMaxScores = lastPlayerWithMaxScores.scores;
-    const lastScoreOfLastPlayerWithMaxScores = scoresOfLastPlayerWithMaxScores[scoresOfLastPlayerWithMaxScores.length - 1];
-
-    activePlayer = lastPlayerWithMaxScores;
-
-    if (lastScoreOfLastPlayerWithMaxScores.length === 3) {
-      const activePlayerIndex = players.findIndex(player => player.id === activePlayer.id);
-
-      if (activePlayerIndex === players.length - 1) {
-        activePlayer = players[0];
-      } else {
-        activePlayer = players[activePlayerIndex + 1];
-      }
-    }
-  }
-
-  return activePlayer
-};
+import { getActivePlayer, calculateRemainingPins } from '../helpers/game';
 
 class Bowling extends Component {
   constructor() {
@@ -278,34 +252,25 @@ class Bowling extends Component {
       activePlayer = getActivePlayer(players, activePlayer);
     }
 
-    // Disable Pin numbers after first roll, if first roll value larger than 0
-    // (subtract number of pins knocked down from max number of pins - 10)
-    const activePlayerScores = activePlayer.scores;
-    const activePlayerActiveScore = activePlayerScores[activePlayerScores.length - 1];
-
-    let remainingPinsValue = MAX_NUMBER_OF_PINS;
-
-    if (activePlayerActiveScore && activePlayerActiveScore.length === 1) {
-      remainingPinsValue -= activePlayerActiveScore[0];
-    }
+    const remainingPins = calculateRemainingPins(activePlayer.scores);
 
     return (
       <div className="bowling__game-form">
         <div className="bowling__game-form__pins mt-10">
-          {this.renderPinButtons(activePlayer.id, remainingPinsValue)}
+          {this.renderPinButtons(activePlayer.id, remainingPins)}
         </div>
         <div className="text-center mt-20">
-          {this.renderRandomPinsButton(activePlayer.id, remainingPinsValue)}
+          {this.renderRandomPinsButton(activePlayer.id, remainingPins)}
         </div>
       </div>
     );
   }
 
-  renderPinButtons(playerId, remainingPinsValue) {
+  renderPinButtons(playerId, remainingPins) {
     const pinButtonsArr = generateArrFromN(MAX_NUMBER_OF_PINS + 1);
 
     return pinButtonsArr.map(item => {
-      const buttonDisabled = item > remainingPinsValue;
+      const buttonDisabled = item > remainingPins;
 
       return (
         <PinButton
