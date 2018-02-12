@@ -39,8 +39,11 @@ const sumFrameRolls = (score) => {
   return 0;
 };
 
-const calculateFrameTotalScore = (currentFrameScore, nextFrameScore) => {
+const calculateFrameTotalScore = (currentFrameScore, nextFrameScore, nextNextFrameScore) => {
   if(isStrike(currentFrameScore)) {
+    if (isStrike(nextFrameScore)) {
+      return 20 + getFrameFirstRoll(nextNextFrameScore);
+    }
     return 10 + sumFrameRolls(nextFrameScore);
   } else if(isSpare(currentFrameScore)) {
     return 10 + getFrameFirstRoll(nextFrameScore);
@@ -53,7 +56,8 @@ const calculateScores = (scores) => {
   for(let i = 0; i < scores.length; i++) {
     const currentFrameScore = scores[i];
     const nextFrameScore = scores[i + 1];
-    const currentFrameTotalScore = calculateFrameTotalScore(currentFrameScore, nextFrameScore);
+    const nextNextFrameScore = scores[i + 2];
+    const currentFrameTotalScore = calculateFrameTotalScore(currentFrameScore, nextFrameScore, nextNextFrameScore);
 
     if (currentFrameScore.length === 3) {
       currentFrameScore[2] = currentFrameTotalScore;

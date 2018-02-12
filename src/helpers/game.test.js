@@ -123,8 +123,16 @@ describe('calculateFrameTotalScore()', () => {
     expect(calculateFrameTotalScore([10, 'X'], [5, 5])).toEqual(20);
   });
 
-  it('should return 20 if currentFrameScore and nextFrameScore are strikes', () => {
+  it('should return 20 if currentFrameScore and nextFrameScore are strikes and no nextNextFrameScore', () => {
     expect(calculateFrameTotalScore([10, 'X'], [10, 'X'])).toEqual(20);
+  });
+
+  it('should return 30 if currentFrameScore, nextFrameScore and nextNextFrameScore are strikes', () => {
+    expect(calculateFrameTotalScore([10, 'X'], [10, 'X'], [10, 'X'])).toEqual(30);
+  });
+
+  it('should return 25 if currentFrameScore and nextFrameScore are strikes and nextNextFrameScore is a spare', () => {
+    expect(calculateFrameTotalScore([10, 'X'], [10, 'X'], [5, 5])).toEqual(25);
   });
 
   it('should return 13 if currentFrameScore is a spare and nextFrameScore is [3, 3]', () => {
