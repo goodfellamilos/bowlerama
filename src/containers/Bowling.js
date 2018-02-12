@@ -33,7 +33,7 @@ import {
 import uniqid from 'uniqid';
 import { GAME_RULES, MAX_NUMBER_OF_FRAMES, MAX_NUMBER_OF_PINS } from '../constants/game';
 import { generateArrFromN, getRandomInt } from '../helpers/utils';
-import { getActivePlayer, calculateRemainingPins } from '../helpers/game';
+import { getActivePlayer, calculateRemainingPins, calculatePlayerTotalScore } from '../helpers/game';
 
 class Bowling extends Component {
   constructor() {
@@ -157,11 +157,7 @@ class Bowling extends Component {
   renderPlayersTable() {
     const { players } = this.props;
     const headerFramesArr = generateArrFromN(MAX_NUMBER_OF_FRAMES);
-    let frame = 1;
-
-    if (players[0].scores.length) {
-      frame = players[0].scores.length;
-    }
+    const frame = players[0].scores.length || 1;
 
     let activePlayer = players[0];
 
@@ -238,7 +234,7 @@ class Bowling extends Component {
 
   renderPlayerTotalScore(scores) {
     if (scores && scores.length) {
-      return scores.filter(score => score.length === 3).map(score => score[2]).reduce((sum, val) => sum + val, 0);
+      return calculatePlayerTotalScore(scores);
     }
 
     return null;
@@ -246,6 +242,27 @@ class Bowling extends Component {
 
   renderBowlingActions() {
     const { players } = this.props;
+
+    const isGameEnded = players.every(player => player.scores.length === MAX_NUMBER_OF_FRAMES &&
+      player.scores[MAX_NUMBER_OF_FRAMES - 1].length === 3);
+
+    if (isGameEnded) {
+      const totalScores = players.map(player => calculatePlayerTotalScore(player.scores));
+      const maxTotalScore = Math.max(...totalScores);
+      const winners = players.filter(player => calculatePlayerTotalScore(player.scores) === maxTotalScore)
+        .map(player => player.name);
+      const winnersLabel = winners.length > 1 ? 'Winners are: ' : 'Winner is: ';
+
+      return (
+        <div className="bowling__game-over">
+          <div>
+            <div className="inline-block mr-20">{winnersLabel}</div>
+            <div className="bowling__game-over__winner inline-block">{winners.join(', ')}</div>
+          </div>
+        </div>
+      );
+    }
+
     let activePlayer = players[0];
 
     if (players.length > 1) {

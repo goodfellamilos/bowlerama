@@ -29,6 +29,8 @@ button:disabled {
 .mt-20 { margin-top: 20px; }
 .mt-40 { margin-top: 40px; }
 
+.mr-20 { margin-right: 20px; }
+
 .text-right {
   text-align: right;
 }
@@ -39,6 +41,10 @@ button:disabled {
 
 .bold {
   font-weight: bold;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .main-bg {
@@ -118,4 +124,19 @@ button:disabled {
   height: 285px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.bowling__game-over {
+  width: 60%;
+  margin: 0 auto;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bowling__game-over__winner {
+  font-size: 40px;
+  font-weight: bold;
+  color: #00bcd4;
 }

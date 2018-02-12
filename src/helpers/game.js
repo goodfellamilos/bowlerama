@@ -103,6 +103,11 @@ const calculateRemainingPins = (activePlayerScores) => {
   return remainingPins;
 };
 
+const calculatePlayerTotalScore = (scores) => scores
+  .filter(score => score.length === 3)
+  .map(score => score[2])
+  .reduce((sum, val) => sum + val, 0);
+
 export {
   populateScores,
   isStrike,
@@ -112,5 +117,6 @@ export {
   calculateFrameTotalScore,
   calculateScores,
   getActivePlayer,
-  calculateRemainingPins
+  calculateRemainingPins,
+  calculatePlayerTotalScore
 }
