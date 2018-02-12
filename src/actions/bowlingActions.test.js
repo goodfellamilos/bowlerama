@@ -1,14 +1,15 @@
 import {
+  ACTION_TYPES,
   addPlayer,
   removePlayer,
   removeAllPlayers,
-  ACTION_TYPES
+  roll
 } from '../actions/bowlingActions';
 
-const { ADD_PLAYER, REMOVE_PLAYER, REMOVE_ALL_PLAYERS } = ACTION_TYPES;
+const { ADD_PLAYER, REMOVE_PLAYER, REMOVE_ALL_PLAYERS, ROLL } = ACTION_TYPES;
 
 describe('bowlingActions', () => {
-  it('should create an action to Add Player', () => {
+  it('should create an action addPlayer', () => {
     const expectedAction = {
       type: ADD_PLAYER,
       playerName: 'Player Number One',
@@ -17,7 +18,7 @@ describe('bowlingActions', () => {
     expect(addPlayer('Player Number One', '_playerNumberOne_')).toEqual(expectedAction);
   });
 
-  it('should create an action to Remove Player', () => {
+  it('should create an action removePlayer', () => {
     const expectedAction = {
       type: REMOVE_PLAYER,
       playerId: '_playerNumberOne_'
@@ -25,10 +26,19 @@ describe('bowlingActions', () => {
     expect(removePlayer('_playerNumberOne_')).toEqual(expectedAction);
   });
 
-  it('should create an action to Remove All Players', () => {
+  it('should create an action removeAllPlayers', () => {
     const expectedAction = {
       type: REMOVE_ALL_PLAYERS
     };
     expect(removeAllPlayers()).toEqual(expectedAction);
+  });
+
+  it('should create an action roll', () => {
+    const expectedAction = {
+      type: ROLL,
+      playerId: '_playerNumberOne_',
+      numberOfPins: 6
+    };
+    expect(roll('_playerNumberOne_', 6)).toEqual(expectedAction);
   });
 });

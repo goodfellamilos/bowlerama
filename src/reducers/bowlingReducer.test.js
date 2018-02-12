@@ -1,7 +1,7 @@
 import bowlingReducer from './bowlingReducer';
-import { ACTION_TYPES } from "../actions/bowlingActions";
+import { ACTION_TYPES } from '../actions/bowlingActions';
 
-const { ADD_PLAYER, REMOVE_PLAYER, REMOVE_ALL_PLAYERS } = ACTION_TYPES;
+const { ADD_PLAYER, REMOVE_PLAYER, REMOVE_ALL_PLAYERS, ROLL } = ACTION_TYPES;
 
 const initialState = {
   players: []
@@ -62,6 +62,26 @@ describe('bowlingReducer', () => {
       type: REMOVE_ALL_PLAYERS
     })).toEqual({
       players: []
+    });
+  });
+
+  it('should return new state for ROLL action', () => {
+    expect(bowlingReducer(updatedState, {
+      type: ROLL,
+      playerId: '_playerNumberOne_',
+      numberOfPins: 3
+    })).toEqual({
+      players: [
+        {
+          name: 'Player Number One',
+          id: '_playerNumberOne_',
+          scores: [[3]]
+        }, {
+          name: 'Player Number Two',
+          id: '_playerNumberTwo_',
+          scores: []
+        }
+      ]
     });
   });
 });

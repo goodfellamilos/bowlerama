@@ -259,7 +259,7 @@ class Bowling extends Component {
       );
     }
 
-    return ' ';
+    return null;
   }
 
   renderPlayerTotalScore(scores) {
@@ -267,7 +267,7 @@ class Bowling extends Component {
       return scores.filter(score => score.length === 3).map(score => score[2]).reduce((sum, val) => sum + val, 0);
     }
 
-    return ' ';
+    return null;
   }
 
   renderBowlingActions() {
