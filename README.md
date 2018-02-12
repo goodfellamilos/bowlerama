@@ -14,7 +14,7 @@ Bowling Challenge
 
 ## Implementation
 App is implemented using `react` and `redux` and bootstrapped with `create-react-app`. All points implemented except additional rolls in last frame.
-Game supports multiple players as well as single player. Random selection of pins is also implemented. 
+Game supports multiple players as well as single player. Random selection of pins is also implemented. User can select between 0 (which means roll is a miss) and 10 pins (maximum number of pins in one roll).
 Game is finished after each of the players completed 10 frames and winner or winners (if multiple players have same total score) are shown.
 
 ## Usage
