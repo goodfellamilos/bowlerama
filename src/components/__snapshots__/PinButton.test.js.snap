@@ -2,14 +2,13 @@
 
 exports[`PinButton component creates a snapshot of a component PinButton 1`] = `
 <div
-  className={undefined}
   style={
     Object {
       "WebkitTapHighlightColor": "rgba(0,0,0,0)",
       "backgroundColor": "transparent",
       "borderRadius": "50%",
       "boxShadow": "0 3px 10px rgba(0, 0, 0, 0.16),
-             0 3px 10px rgba(0, 0, 0, 0.23)",
+         0 3px 10px rgba(0, 0, 0, 0.23)",
       "boxSizing": "border-box",
       "color": "rgba(0, 0, 0, 0.87)",
       "display": "inline-block",
