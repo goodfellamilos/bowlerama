@@ -1,4 +1,4 @@
-import { MAX_NUMBER_OF_PINS } from '../constants/game';
+import { MAX_NUMBER_OF_PINS } from "../constants/game";
 
 const populateScores = (scores, numberOfPins) => {
   const scoresLength = scores.length;
@@ -8,7 +8,7 @@ const populateScores = (scores, numberOfPins) => {
     scores[currentFrame].push(numberOfPins);
   } else {
     if (numberOfPins === 10) {
-      scores.push([numberOfPins, 'X']);
+      scores.push([numberOfPins, "X"]);
     } else {
       scores.push([numberOfPins]);
     }
@@ -17,16 +17,19 @@ const populateScores = (scores, numberOfPins) => {
   return scores;
 };
 
-const isStrike = score => score && score.includes('X');
+const isStrike = (score) => score && score.includes("X");
 
-const isSpare = score => score && !isStrike(score) && score.slice(0, 2).reduce((sum, val) => sum + val, 0) === 10;
+const isSpare = (score) =>
+  score &&
+  !isStrike(score) &&
+  score.slice(0, 2).reduce((sum, val) => sum + val, 0) === 10;
 
-const getFrameFirstRoll = score => score && score[0] ? score[0] : 0;
+const getFrameFirstRoll = (score) => (score && score[0] ? score[0] : 0);
 
 const sumFrameRolls = (score) => {
   if (score) {
     if (score.length === 1) {
-      return Number(score.join(' '));
+      return Number(score.join(" "));
     }
 
     if (isStrike(score) || isSpare(score)) {
@@ -39,13 +42,17 @@ const sumFrameRolls = (score) => {
   return 0;
 };
 
-const calculateFrameTotalScore = (currentFrameScore, nextFrameScore, nextNextFrameScore) => {
-  if(isStrike(currentFrameScore)) {
+const calculateFrameTotalScore = (
+  currentFrameScore,
+  nextFrameScore,
+  nextNextFrameScore
+) => {
+  if (isStrike(currentFrameScore)) {
     if (isStrike(nextFrameScore)) {
       return 20 + getFrameFirstRoll(nextNextFrameScore);
     }
     return 10 + sumFrameRolls(nextFrameScore);
-  } else if(isSpare(currentFrameScore)) {
+  } else if (isSpare(currentFrameScore)) {
     return 10 + getFrameFirstRoll(nextFrameScore);
   } else {
     return sumFrameRolls(currentFrameScore);
@@ -53,11 +60,15 @@ const calculateFrameTotalScore = (currentFrameScore, nextFrameScore, nextNextFra
 };
 
 const calculateScores = (scores) => {
-  for(let i = 0; i < scores.length; i++) {
+  for (let i = 0; i < scores.length; i++) {
     const currentFrameScore = scores[i];
     const nextFrameScore = scores[i + 1];
     const nextNextFrameScore = scores[i + 2];
-    const currentFrameTotalScore = calculateFrameTotalScore(currentFrameScore, nextFrameScore, nextNextFrameScore);
+    const currentFrameTotalScore = calculateFrameTotalScore(
+      currentFrameScore,
+      nextFrameScore,
+      nextNextFrameScore
+    );
 
     if (currentFrameScore.length === 3) {
       currentFrameScore[2] = currentFrameTotalScore;
@@ -71,19 +82,30 @@ const calculateScores = (scores) => {
 
 // Get active player after current active player finished with rolling
 const getActivePlayer = (players, currentActivePlayer) => {
-  const maxScoresLength = Math.max.apply(Math, players.map(player => player.scores.length));
+  const maxScoresLength = Math.max.apply(
+    Math,
+    players.map((player) => player.scores.length)
+  );
   let activePlayer = currentActivePlayer;
 
   if (maxScoresLength > 0) {
-    const playersWithMaxScoresLength = players.filter(player => player.scores.length === maxScoresLength);
-    const lastPlayerWithMaxScores = playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
+    const playersWithMaxScoresLength = players.filter(
+      (player) => player.scores.length === maxScoresLength
+    );
+    const lastPlayerWithMaxScores =
+      playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
     const scoresOfLastPlayerWithMaxScores = lastPlayerWithMaxScores.scores;
-    const lastScoreOfLastPlayerWithMaxScores = scoresOfLastPlayerWithMaxScores[scoresOfLastPlayerWithMaxScores.length - 1];
+    const lastScoreOfLastPlayerWithMaxScores =
+      scoresOfLastPlayerWithMaxScores[
+        scoresOfLastPlayerWithMaxScores.length - 1
+      ];
 
     activePlayer = lastPlayerWithMaxScores;
 
     if (lastScoreOfLastPlayerWithMaxScores.length === 3) {
-      const activePlayerIndex = players.findIndex(player => player.id === activePlayer.id);
+      const activePlayerIndex = players.findIndex(
+        (player) => player.id === activePlayer.id
+      );
 
       if (activePlayerIndex === players.length - 1) {
         activePlayer = players[0];
@@ -93,12 +115,13 @@ const getActivePlayer = (players, currentActivePlayer) => {
     }
   }
 
-  return activePlayer
+  return activePlayer;
 };
 
 const calculateRemainingPins = (activePlayerScores) => {
   let remainingPins = MAX_NUMBER_OF_PINS;
-  const activePlayerActiveScore = activePlayerScores[activePlayerScores.length - 1];
+  const activePlayerActiveScore =
+    activePlayerScores[activePlayerScores.length - 1];
 
   if (activePlayerActiveScore && activePlayerActiveScore.length === 1) {
     remainingPins -= activePlayerActiveScore[0];
@@ -107,10 +130,11 @@ const calculateRemainingPins = (activePlayerScores) => {
   return remainingPins;
 };
 
-const calculatePlayerTotalScore = (scores) => scores
-  .filter(score => score.length === 3)
-  .map(score => score[2])
-  .reduce((sum, val) => sum + val, 0);
+const calculatePlayerTotalScore = (scores) =>
+  scores
+    .filter((score) => score.length === 3)
+    .map((score) => score[2])
+    .reduce((sum, val) => sum + val, 0);
 
 export {
   populateScores,
@@ -122,5 +146,5 @@ export {
   calculateScores,
   getActivePlayer,
   calculateRemainingPins,
-  calculatePlayerTotalScore
-}
+  calculatePlayerTotalScore,
+};

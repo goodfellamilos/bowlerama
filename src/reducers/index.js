@@ -1,1 +1,1 @@
-export { default as bowling } from './bowlingReducer';
+export { default as bowling } from "./bowlingReducer";

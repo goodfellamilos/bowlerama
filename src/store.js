@@ -1,22 +1,19 @@
-import {combineReducers, createStore, compose} from 'redux';
-import * as reducers from './reducers';
+import { combineReducers, createStore, compose } from "redux";
+import * as reducers from "./reducers";
 
-const reducer = combineReducers({...reducers});
+const reducer = combineReducers({ ...reducers });
 const enhancers = [];
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   const devToolsExtension = window.devToolsExtension;
 
-  if (typeof devToolsExtension === 'function') {
-    enhancers.push(devToolsExtension())
+  if (typeof devToolsExtension === "function") {
+    enhancers.push(devToolsExtension());
   }
 }
 
 const composedEnhancers = compose(...enhancers);
 
-const store = createStore(
-  reducer,
-  composedEnhancers
-);
+const store = createStore(reducer, composedEnhancers);
 
 export default store;

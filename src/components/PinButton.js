@@ -1,16 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FloatingActionButton } from 'material-ui';
-import { FLOATING_ACTION_BUTTON_STYLE } from '../constants/materialUIStyles';
+import React from "react";
+import PropTypes from "prop-types";
+import { FloatingActionButton } from "material-ui";
+import { FLOATING_ACTION_BUTTON_STYLE } from "../constants/materialUIStyles";
 
 const PinButton = ({ playerId, numberOfPins, disabled, onClick }) => {
-  const floatingActionButtonStyle = numberOfPins < 10 ? FLOATING_ACTION_BUTTON_STYLE : {};
+  const floatingActionButtonStyle =
+    numberOfPins < 10 ? FLOATING_ACTION_BUTTON_STYLE : {};
   const onButtonClick = () => {
     onClick(playerId, numberOfPins);
   };
 
   return (
-    <FloatingActionButton style={floatingActionButtonStyle} disabled={disabled} onClick={onButtonClick}>
+    <FloatingActionButton
+      style={floatingActionButtonStyle}
+      disabled={disabled}
+      onClick={onButtonClick}
+    >
       {`${numberOfPins}`}
     </FloatingActionButton>
   );
@@ -20,12 +25,12 @@ PinButton.propTypes = {
   playerId: PropTypes.string.isRequired,
   numberOfPins: PropTypes.number.isRequired,
   disabled: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };
 
 PinButton.defaultProps = {
   disabled: false,
-  onClick: e => e
+  onClick: (e) => e,
 };
 
 export default PinButton;
