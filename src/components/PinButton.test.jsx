@@ -48,7 +48,7 @@ describe("PinButton component", () => {
   });
 
   it("calls onClick with correct arguments when clicked", () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(
       <PinButton
         playerId={"_playerNumberFour_"}

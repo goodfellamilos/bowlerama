@@ -13,7 +13,7 @@ describe("DeleteButton component", () => {
   });
 
   it("calls onClick when clicked", () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(<DeleteButton onClick={handleClick} />);
     fireEvent.click(screen.getByRole("button"));
     expect(handleClick).toHaveBeenCalled();

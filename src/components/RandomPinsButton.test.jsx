@@ -25,7 +25,7 @@ describe("RandomPinsButton component", () => {
   });
 
   it("calls onClick with correct arguments when clicked", () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(
       <RandomPinsButton
         playerId={"_playerNumberThree_"}
