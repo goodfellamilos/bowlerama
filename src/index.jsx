@@ -11,5 +11,5 @@ const root = createRoot(rootEl);
 root.render(
   <Provider store={store}>
     <App />
-  </Provider>
+  </Provider>,
 );

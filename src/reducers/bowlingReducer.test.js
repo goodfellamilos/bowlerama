@@ -33,7 +33,7 @@ describe("bowlingReducer", () => {
         type: ADD_PLAYER,
         playerName: "Player Number One",
         playerId: "_playerNumberOne_",
-      })
+      }),
     ).toEqual({
       players: [
         {
@@ -50,7 +50,7 @@ describe("bowlingReducer", () => {
       bowlingReducer(updatedState, {
         type: REMOVE_PLAYER,
         playerId: "_playerNumberTwo_",
-      })
+      }),
     ).toEqual({
       players: [
         {
@@ -66,7 +66,7 @@ describe("bowlingReducer", () => {
     expect(
       bowlingReducer(updatedState, {
         type: REMOVE_ALL_PLAYERS,
-      })
+      }),
     ).toEqual({
       players: [],
     });
@@ -78,7 +78,7 @@ describe("bowlingReducer", () => {
         type: ROLL,
         playerId: "_playerNumberOne_",
         numberOfPins: 3,
-      })
+      }),
     ).toEqual({
       players: [
         {

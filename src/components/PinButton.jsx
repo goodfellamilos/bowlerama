@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import { Fab } from "@mui/material";
 import { FLOATING_ACTION_BUTTON_STYLE } from "../constants/materialUIStyles";
 
-const PinButton = ({ playerId, numberOfPins, disabled = false, onClick = (e) => e }) => {
+const PinButton = ({
+  playerId,
+  numberOfPins,
+  disabled = false,
+  onClick = (e) => e,
+}) => {
   const fabStyle = numberOfPins < 10 ? FLOATING_ACTION_BUTTON_STYLE : {};
   const onButtonClick = () => {
     onClick(playerId, numberOfPins);

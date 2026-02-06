@@ -229,9 +229,7 @@ class Bowling extends Component {
                       {player.name}
                     </TableCell>
                     {headerFramesArr.map((frameIndex) => (
-                      <TableCell
-                        key={`tableBodyHeaderColumn_${frameIndex}`}
-                      >
+                      <TableCell key={`tableBodyHeaderColumn_${frameIndex}`}>
                         {this.renderPlayerScore(player.scores, frameIndex)}
                       </TableCell>
                     ))}
@@ -279,17 +277,18 @@ class Bowling extends Component {
     const isGameEnded = players.every(
       (player) =>
         player.scores.length === MAX_NUMBER_OF_FRAMES &&
-        player.scores[MAX_NUMBER_OF_FRAMES - 1].length === 3
+        player.scores[MAX_NUMBER_OF_FRAMES - 1].length === 3,
     );
 
     if (isGameEnded) {
       const totalScores = players.map((player) =>
-        calculatePlayerTotalScore(player.scores)
+        calculatePlayerTotalScore(player.scores),
       );
       const maxTotalScore = Math.max(...totalScores);
       const winners = players
         .filter(
-          (player) => calculatePlayerTotalScore(player.scores) === maxTotalScore
+          (player) =>
+            calculatePlayerTotalScore(player.scores) === maxTotalScore,
         )
         .map((player) => player.name);
       const winnersLabel = winners.length > 1 ? "Winners are: " : "Winner is: ";
@@ -362,10 +361,7 @@ class Bowling extends Component {
         <Button variant="contained" onClick={this.onOpenDialogClick}>
           {"Game Rules"}
         </Button>
-        <Dialog
-          open={this.state.dialogOpen}
-          onClose={this.onCloseDialogClick}
-        >
+        <Dialog open={this.state.dialogOpen} onClose={this.onCloseDialogClick}>
           <DialogTitle>{"Game Rules"}</DialogTitle>
           <DialogContent>
             {GAME_RULES.map((rule, index) => (
