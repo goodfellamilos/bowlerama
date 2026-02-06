@@ -1,4 +1,3 @@
-import React from "react";
 import Bowling from "./Bowling";
 
 export default function App() {

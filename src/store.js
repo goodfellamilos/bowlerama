@@ -4,7 +4,7 @@ import * as reducers from "./reducers";
 const reducer = combineReducers({ ...reducers });
 const enhancers = [];
 
-if (process.env.NODE_ENV === "development") {
+if (import.meta.env.DEV) {
   const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
   if (typeof devToolsExtension === "function") {

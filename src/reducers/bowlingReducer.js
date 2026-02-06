@@ -32,7 +32,7 @@ export default function friends(state = initialState, action) {
         ...state,
         players: [],
       };
-    case ACTION_TYPES.ROLL:
+    case ACTION_TYPES.ROLL: {
       const { players } = state;
       const { playerId, numberOfPins } = action;
       const currentPlayer = players.find((player) => player.id === playerId);
@@ -47,7 +47,7 @@ export default function friends(state = initialState, action) {
         };
       }
 
-      let currentPlayerScores = populateScores(
+      const currentPlayerScores = populateScores(
         currentPlayer.scores,
         numberOfPins,
       );
@@ -57,6 +57,7 @@ export default function friends(state = initialState, action) {
         ...state,
         players: [].concat(players),
       };
+    }
     default:
       return state;
   }

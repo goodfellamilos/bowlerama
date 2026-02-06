@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Fab } from "@mui/material";
 import { FLOATING_ACTION_BUTTON_STYLE } from "../constants/materialUIStyles";

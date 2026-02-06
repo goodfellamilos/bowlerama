@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { ListItem, ListItemText, ListItemSecondaryAction } from "@mui/material";
 import DeleteButton from "../components/DeleteButton";
