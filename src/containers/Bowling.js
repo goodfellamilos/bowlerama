@@ -3,18 +3,18 @@ import { connect } from "react-redux";
 import {
   Paper,
   TextField,
-  RaisedButton,
-  FlatButton,
+  Button,
   List,
   Table,
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
+  TableCell,
   TableRow,
-  TableRowColumn,
   Dialog,
-} from "material-ui";
-import { getMuiTheme, MuiThemeProvider } from "material-ui/styles";
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import {
   addPlayer,
   removePlayer,
@@ -57,22 +57,22 @@ class Bowling extends Component {
   render() {
     return (
       <div className="bowling-container">
-        <MuiThemeProvider muiTheme={getMuiTheme()}>
-          <div className="height-100">
-            <Paper style={PAPER_STYLE}>
-              {this.renderStartForm()}
-              {this.renderGameForm()}
-            </Paper>
-            <div className="bowling__bottom-actions mt-20">
-              <RaisedButton
-                secondary={true}
-                label={"Restart Game"}
-                onClick={this.onRestartGameClick}
-              />
-              {this.renderGameRulesDialog()}
-            </div>
+        <div className="height-100">
+          <Paper style={PAPER_STYLE}>
+            {this.renderStartForm()}
+            {this.renderGameForm()}
+          </Paper>
+          <div className="bowling__bottom-actions mt-20">
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={this.onRestartGameClick}
+            >
+              {"Restart Game"}
+            </Button>
+            {this.renderGameRulesDialog()}
           </div>
-        </MuiThemeProvider>
+        </div>
       </div>
     );
   }
@@ -87,18 +87,22 @@ class Bowling extends Component {
             <div className="bowling__add-players__form">
               <div>
                 <TextField
-                  hintText={"Player Name"}
+                  placeholder="Player Name"
+                  variant="standard"
                   value={playerName}
                   onChange={this.onParticipantNameChange}
-                  errorText={playerNameErrorText}
+                  error={!!playerNameErrorText}
+                  helperText={playerNameErrorText}
                 />
               </div>
               <div className="mt-10">
-                <RaisedButton
-                  label={"Add Player"}
-                  primary={true}
+                <Button
+                  variant="contained"
+                  color="primary"
                   onClick={this.onAddPlayerClick}
-                />
+                >
+                  {"Add Player"}
+                </Button>
               </div>
               {this.renderStartGameButton()}
             </div>
@@ -122,11 +126,13 @@ class Bowling extends Component {
     if (players.length) {
       return (
         <div className="mt-40">
-          <RaisedButton
-            label={"Start Game"}
-            secondary={true}
+          <Button
+            variant="contained"
+            color="secondary"
             onClick={this.onStartGame}
-          />
+          >
+            {"Start Game"}
+          </Button>
         </div>
       );
     }
@@ -183,34 +189,30 @@ class Bowling extends Component {
     return (
       <div>
         <Table>
-          <TableHeader
-            displaySelectAll={false}
-            adjustForCheckbox={false}
-            fixedHeader={true}
-          >
+          <TableHead>
             <TableRow>
-              <TableHeaderColumn style={TABLE_FIRST_COLUMN_CELL_STYLE}>
+              <TableCell style={TABLE_FIRST_COLUMN_CELL_STYLE}>
                 {"Player"}
-              </TableHeaderColumn>
+              </TableCell>
               {headerFramesArr.map((frameIndex) => {
                 const tableHeaderColumnStyle =
                   frameIndex + 1 === frame ? TABLE_CELL_HIGHLIGHTED_STYLE : {};
                 return (
-                  <TableHeaderColumn
+                  <TableCell
                     key={`tableHeaderHeaderColumn_${frameIndex}`}
                     style={tableHeaderColumnStyle}
                   >
                     {`F ${frameIndex + 1}`}
-                  </TableHeaderColumn>
+                  </TableCell>
                 );
               })}
-              <TableHeaderColumn>{"Score"}</TableHeaderColumn>
+              <TableCell>{"Score"}</TableCell>
             </TableRow>
-          </TableHeader>
+          </TableHead>
         </Table>
         <div className="table-container">
           <Table>
-            <TableBody displayRowCheckbox={false}>
+            <TableBody>
               {players.map((player) => {
                 const tableRowColumnStyle =
                   activePlayer.id === player.id
@@ -218,24 +220,24 @@ class Bowling extends Component {
                     : {};
                 return (
                   <TableRow key={`tableRow_${player.id}`}>
-                    <TableRowColumn
+                    <TableCell
                       style={{
                         ...TABLE_FIRST_COLUMN_CELL_STYLE,
                         ...tableRowColumnStyle,
                       }}
                     >
                       {player.name}
-                    </TableRowColumn>
+                    </TableCell>
                     {headerFramesArr.map((frameIndex) => (
-                      <TableHeaderColumn
+                      <TableCell
                         key={`tableBodyHeaderColumn_${frameIndex}`}
                       >
                         {this.renderPlayerScore(player.scores, frameIndex)}
-                      </TableHeaderColumn>
+                      </TableCell>
                     ))}
-                    <TableRowColumn>
+                    <TableCell>
                       {this.renderPlayerTotalScore(player.scores)}
-                    </TableRowColumn>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -355,27 +357,26 @@ class Bowling extends Component {
   }
 
   renderGameRulesDialog() {
-    const dialogActions = [
-      <FlatButton
-        label={"Close"}
-        primary={true}
-        onClick={this.onCloseDialogClick}
-      />,
-    ];
-
     return (
       <div className="text-right">
-        <RaisedButton label={"Game Rules"} onClick={this.onOpenDialogClick} />
+        <Button variant="contained" onClick={this.onOpenDialogClick}>
+          {"Game Rules"}
+        </Button>
         <Dialog
-          title={"Game Rules"}
-          modal={false}
-          actions={dialogActions}
           open={this.state.dialogOpen}
-          onRequestClose={this.onCloseDialogClick}
+          onClose={this.onCloseDialogClick}
         >
-          {GAME_RULES.map((rule, index) => (
-            <div key={`rule_${index}`}>{rule}</div>
-          ))}
+          <DialogTitle>{"Game Rules"}</DialogTitle>
+          <DialogContent>
+            {GAME_RULES.map((rule, index) => (
+              <div key={`rule_${index}`}>{rule}</div>
+            ))}
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={this.onCloseDialogClick}>
+              {"Close"}
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

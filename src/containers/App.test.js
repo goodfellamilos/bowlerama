@@ -1,21 +1,25 @@
 import React from "react";
-import { configure } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import { shallow, mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import store from "../store";
 import App from "./App";
 
-configure({ adapter: new Adapter() });
-
 describe("renders without crashing container App", () => {
-  it("should render div", () => {
-    expect(shallow(<App />).find("div").length).toBe(1);
+  it("should render without crashing", () => {
+    const { container } = render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+    expect(container.querySelector("div")).toBeTruthy();
   });
 
-  it("should render Provider", () => {
-    expect(shallow(<App />).find("Provider").length).toBe(1);
-  });
-
-  it("should render Bowling", () => {
-    expect(mount(<App />).find("Bowling").length).toBe(1);
+  it("should render the bowling container", () => {
+    const { container } = render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+    expect(container.querySelector(".bowling-container")).toBeTruthy();
   });
 });

@@ -1,15 +1,10 @@
 import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import RandomPinsButton from "./RandomPinsButton";
-import { getMuiTheme, MuiThemeProvider } from "material-ui/styles";
-import { configure, shallow, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import renderer from "react-test-renderer";
-
-configure({ adapter: new Adapter() });
 
 describe("RandomPinsButton component", () => {
   it("renders without crashing component RandomPinsButton", () => {
-    shallow(
+    render(
       <RandomPinsButton
         playerId={"_playerNumberOne_"}
         numberOfPins={0}
@@ -19,31 +14,26 @@ describe("RandomPinsButton component", () => {
   });
 
   it("renders button", () => {
-    expect(
-      mount(
-        <MuiThemeProvider muiTheme={getMuiTheme()}>
-          <RandomPinsButton
-            playerId={"_playerNumberTwo_"}
-            numberOfPins={5}
-            onClick={(e) => e}
-          />
-        </MuiThemeProvider>
-      ).find("button").length
-    ).toBe(1);
+    render(
+      <RandomPinsButton
+        playerId={"_playerNumberTwo_"}
+        numberOfPins={5}
+        onClick={(e) => e}
+      />
+    );
+    expect(screen.getByRole("button")).toBeTruthy();
   });
 
-  it("creates a snapshot of a component RandomPinsButton", () => {
-    const component = renderer.create(
-      <MuiThemeProvider muiTheme={getMuiTheme()}>
-        <RandomPinsButton
-          playerId={"_playerNumberThree_"}
-          numberOfPins={9}
-          onClick={(e) => e}
-        />
-      </MuiThemeProvider>
+  it("calls onClick with correct arguments when clicked", () => {
+    const handleClick = jest.fn();
+    render(
+      <RandomPinsButton
+        playerId={"_playerNumberThree_"}
+        numberOfPins={9}
+        onClick={handleClick}
+      />
     );
-
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    fireEvent.click(screen.getByRole("button"));
+    expect(handleClick).toHaveBeenCalledWith("_playerNumberThree_", 9);
   });
 });

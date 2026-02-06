@@ -1,26 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { IconButton } from "material-ui";
-import ActionDelete from "material-ui/svg-icons/action/delete";
-import { ICON_BUTTON_STYLE } from "../constants/materialUIStyles";
+import { IconButton, Tooltip } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const DeleteButton = ({ onClick }) => (
-  <IconButton
-    style={ICON_BUTTON_STYLE}
-    tooltip={"Remove player"}
-    tooltipPosition={"top-left"}
-    onClick={onClick}
-  >
-    <ActionDelete />
-  </IconButton>
+const DeleteButton = ({ onClick = (e) => e }) => (
+  <Tooltip title="Remove player" placement="top-start">
+    <IconButton onClick={onClick} size="small">
+      <DeleteIcon />
+    </IconButton>
+  </Tooltip>
 );
 
 DeleteButton.propTypes = {
   onClick: PropTypes.func.isRequired,
-};
-
-DeleteButton.defaultProps = {
-  onClick: (e) => e,
 };
 
 export default DeleteButton;

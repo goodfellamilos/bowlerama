@@ -1,27 +1,21 @@
 import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import DeleteButton from "./DeleteButton";
-import { getMuiTheme, MuiThemeProvider } from "material-ui/styles";
-import { configure, shallow, mount } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-
-configure({ adapter: new Adapter() });
 
 describe("DeleteButton component", () => {
   it("renders without crashing component DeleteButton", () => {
-    shallow(
-      <MuiThemeProvider muiTheme={getMuiTheme()}>
-        <DeleteButton onClick={(e) => e} />
-      </MuiThemeProvider>
-    );
+    render(<DeleteButton onClick={(e) => e} />);
   });
 
   it("renders button", () => {
-    expect(
-      mount(
-        <MuiThemeProvider muiTheme={getMuiTheme()}>
-          <DeleteButton onClick={(e) => e} />
-        </MuiThemeProvider>
-      ).find("button").length
-    ).toBe(1);
+    render(<DeleteButton onClick={(e) => e} />);
+    expect(screen.getByRole("button")).toBeTruthy();
+  });
+
+  it("calls onClick when clicked", () => {
+    const handleClick = jest.fn();
+    render(<DeleteButton onClick={handleClick} />);
+    fireEvent.click(screen.getByRole("button"));
+    expect(handleClick).toHaveBeenCalled();
   });
 });
