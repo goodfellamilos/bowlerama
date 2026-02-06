@@ -45,7 +45,7 @@ const sumFrameRolls = (score) => {
 const calculateFrameTotalScore = (
   currentFrameScore,
   nextFrameScore,
-  nextNextFrameScore
+  nextNextFrameScore,
 ) => {
   if (isStrike(currentFrameScore)) {
     if (isStrike(nextFrameScore)) {
@@ -67,7 +67,7 @@ const calculateScores = (scores) => {
     const currentFrameTotalScore = calculateFrameTotalScore(
       currentFrameScore,
       nextFrameScore,
-      nextNextFrameScore
+      nextNextFrameScore,
     );
 
     if (currentFrameScore.length === 3) {
@@ -84,13 +84,13 @@ const calculateScores = (scores) => {
 const getActivePlayer = (players, currentActivePlayer) => {
   const maxScoresLength = Math.max.apply(
     Math,
-    players.map((player) => player.scores.length)
+    players.map((player) => player.scores.length),
   );
   let activePlayer = currentActivePlayer;
 
   if (maxScoresLength > 0) {
     const playersWithMaxScoresLength = players.filter(
-      (player) => player.scores.length === maxScoresLength
+      (player) => player.scores.length === maxScoresLength,
     );
     const lastPlayerWithMaxScores =
       playersWithMaxScoresLength[playersWithMaxScoresLength.length - 1];
@@ -104,7 +104,7 @@ const getActivePlayer = (players, currentActivePlayer) => {
 
     if (lastScoreOfLastPlayerWithMaxScores.length === 3) {
       const activePlayerIndex = players.findIndex(
-        (player) => player.id === activePlayer.id
+        (player) => player.id === activePlayer.id,
       );
 
       if (activePlayerIndex === players.length - 1) {

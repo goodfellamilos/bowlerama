@@ -9,7 +9,7 @@ describe("RandomPinsButton component", () => {
         playerId={"_playerNumberOne_"}
         numberOfPins={0}
         onClick={(e) => e}
-      />
+      />,
     );
   });
 
@@ -19,7 +19,7 @@ describe("RandomPinsButton component", () => {
         playerId={"_playerNumberTwo_"}
         numberOfPins={5}
         onClick={(e) => e}
-      />
+      />,
     );
     expect(screen.getByRole("button")).toBeTruthy();
   });
@@ -31,7 +31,7 @@ describe("RandomPinsButton component", () => {
         playerId={"_playerNumberThree_"}
         numberOfPins={9}
         onClick={handleClick}
-      />
+      />,
     );
     fireEvent.click(screen.getByRole("button"));
     expect(handleClick).toHaveBeenCalledWith("_playerNumberThree_", 9);

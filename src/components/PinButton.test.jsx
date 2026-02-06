@@ -9,7 +9,7 @@ describe("PinButton component", () => {
         playerId={"_playerNumberOne_"}
         numberOfPins={4}
         onClick={(e) => e}
-      />
+      />,
     );
   });
 
@@ -19,7 +19,7 @@ describe("PinButton component", () => {
         playerId={"_playerNumberOne_"}
         numberOfPins={4}
         onClick={(e) => e}
-      />
+      />,
     );
     expect(screen.getByRole("button")).toBeTruthy();
   });
@@ -30,7 +30,7 @@ describe("PinButton component", () => {
         playerId={"_playerNumberTwo_"}
         numberOfPins={7}
         onClick={(e) => e}
-      />
+      />,
     );
     expect(screen.getByRole("button")).not.toBeDisabled();
   });
@@ -42,7 +42,7 @@ describe("PinButton component", () => {
         numberOfPins={10}
         disabled={true}
         onClick={(e) => e}
-      />
+      />,
     );
     expect(screen.getByRole("button")).toBeDisabled();
   });
@@ -54,7 +54,7 @@ describe("PinButton component", () => {
         playerId={"_playerNumberFour_"}
         numberOfPins={8}
         onClick={handleClick}
-      />
+      />,
     );
     fireEvent.click(screen.getByRole("button"));
     expect(handleClick).toHaveBeenCalledWith("_playerNumberFour_", 8);

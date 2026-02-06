@@ -24,7 +24,7 @@ export default function friends(state = initialState, action) {
       return {
         ...state,
         players: state.players.filter(
-          (player) => player.id !== action.playerId
+          (player) => player.id !== action.playerId,
         ),
       };
     case ACTION_TYPES.REMOVE_ALL_PLAYERS:
@@ -49,7 +49,7 @@ export default function friends(state = initialState, action) {
 
       let currentPlayerScores = populateScores(
         currentPlayer.scores,
-        numberOfPins
+        numberOfPins,
       );
       currentPlayer.scores = calculateScores(currentPlayerScores);
 

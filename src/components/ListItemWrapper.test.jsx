@@ -12,7 +12,7 @@ describe("ListItemWrapper component", () => {
           scores: [],
         }}
         onClick={(e) => e}
-      />
+      />,
     );
   });
 
@@ -25,7 +25,7 @@ describe("ListItemWrapper component", () => {
           scores: [],
         }}
         onClick={(e) => e}
-      />
+      />,
     );
     expect(screen.getByText("Player Number One")).toBeTruthy();
   });

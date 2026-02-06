@@ -129,7 +129,7 @@ describe("calculateFrameTotalScore()", () => {
 
   it("should return 30 if currentFrameScore, nextFrameScore and nextNextFrameScore are strikes", () => {
     expect(calculateFrameTotalScore([10, "X"], [10, "X"], [10, "X"])).toEqual(
-      30
+      30,
     );
   });
 
@@ -180,7 +180,7 @@ describe("calculateScores()", () => {
       calculateScores([
         [10, "X", 10],
         [1, 2, 3],
-      ])
+      ]),
     ).toEqual([
       [10, "X", 13],
       [1, 2, 3],
@@ -192,7 +192,7 @@ describe("calculateScores()", () => {
       calculateScores([
         [10, "X", 10],
         [10, "X", 10],
-      ])
+      ]),
     ).toEqual([
       [10, "X", 20],
       [10, "X", 10],
@@ -204,7 +204,7 @@ describe("calculateScores()", () => {
       calculateScores([
         [5, 5, 10],
         [1, 2, 3],
-      ])
+      ]),
     ).toEqual([
       [5, 5, 11],
       [1, 2, 3],

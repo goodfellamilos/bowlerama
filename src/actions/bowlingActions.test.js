@@ -16,7 +16,7 @@ describe("bowlingActions", () => {
       playerId: "_playerNumberOne_",
     };
     expect(addPlayer("Player Number One", "_playerNumberOne_")).toEqual(
-      expectedAction
+      expectedAction,
     );
   });
 

@@ -9,7 +9,7 @@ describe("renders without crashing container App", () => {
     const { container } = render(
       <Provider store={store}>
         <App />
-      </Provider>
+      </Provider>,
     );
     expect(container.querySelector("div")).toBeTruthy();
   });
@@ -18,7 +18,7 @@ describe("renders without crashing container App", () => {
     const { container } = render(
       <Provider store={store}>
         <App />
-      </Provider>
+      </Provider>,
     );
     expect(container.querySelector(".bowling-container")).toBeTruthy();
   });
